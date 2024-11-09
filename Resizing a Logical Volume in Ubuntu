@@ -43,6 +43,59 @@ df -h
 
 
 
+---------------
+
+
+
+sudo parted /dev/sda
+Set the Unit to TB (to make it easier to view the entire disk space):
+
+bash
+Copy code
+(parted) unit TB
+Print the Partition Table (to confirm current layout):
+
+bash
+Copy code
+(parted) print
+Resize Partition 3:
+
+Find the start point of /dev/sda3 from the output. Then, use the resizepart command to extend it to the maximum size.
+For example:
+bash
+Copy code
+(parted) resizepart 3 100%
+Exit parted:
+
+bash
+Copy code
+(parted) quit
+Reboot the System:
+
+bash
+Copy code
+sudo reboot
+Resize Physical Volume and Logical Volume: After reboot, extend the physical and logical volumes as before:
+
+bash
+Copy code
+sudo pvresize /dev/sda3
+sudo lvextend -l +100%FREE /dev/ubuntu-vg/ubuntu-lv
+Resize the Filesystem:
+
+bash
+Copy code
+sudo resize2fs /dev/ubuntu-vg/ubuntu-lv
+Verify the Available Space:
+
+bash
+Copy code
+df -h
+
+
+
+
+
 ### Summary of Commands
 
 ```bash
