@@ -126,6 +126,24 @@ df -h
 
 
 
+---
+
+
+# Check available space in Volume Group
+sudo vgdisplay ubuntu-vg
+
+# Resize the Physical Volume
+sudo pvresize /dev/sda3
+
+# Extend the Logical Volume to use all available space
+sudo lvextend -l +100%FREE /dev/mapper/ubuntu--vg-ubuntu--lv
+
+# Resize the filesystem
+sudo resize2fs /dev/mapper/ubuntu--vg-ubuntu--lv  # For ext4
+# sudo xfs_growfs /  # Uncomment if using XFS
+
+# Verify the resized filesystem
+df -h
 
 
 
